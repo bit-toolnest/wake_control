@@ -13,6 +13,18 @@ cd WakeControl
 # Example: wake at 08:00, shutdown at 23:00
 ./install.sh 08:00 23:00
 ```
+## Time Handling
+
+When you run `install.sh <wakeup_time> <shutdown_time>`, the script decides whether the wake‑up time is scheduled for **today** or **tomorrow**:
+
+- If the wake‑up time is still in the future on the same day, it will schedule for **today**.
+- If the wake‑up time has already passed, it will schedule for **tomorrow** at that time.
+
+Example:
+- Run at 20:10 with wakeup=20:26 → wake scheduled for today 20:26.
+- Run at 21:00 with wakeup=20:26 → wake scheduled for tomorrow 20:26.
+
+This ensures the server always wakes at the next valid occurrence of the time you specify.
 The installer will:
 
 Copy the script into /usr/local/sbin/schedule_power.sh
@@ -36,7 +48,6 @@ To temporarily stop shutdown and wake‑up scheduling:
 sudo touch /tmp/disable_wakeup
 Remove the file to re‑enable.
 ```
-
 Uninstall
 To remove the cron job and script:
 
