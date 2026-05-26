@@ -1,26 +1,45 @@
-keep the script to rtc enable for server wakeup: /usr/local/sbin/schedule_wakeup.sh
+# WakeControl – Wake & Shutdown Automation
 
-set executable: sudo chmod +x /usr/local/sbin/schedule_wakeup.sh
+This project provides a script to automatically enable RTC wake‑up and shutdown the server at scheduled times.
 
-Set cron job for shutdown the server at 6:00 PM and call the schedule_wakeup.sh where had schedule to wake up machine at 10a.m
+## Installation
 
-sudo crontab -e
+Clone the repository and run the installer with your desired wake‑up and shutdown times:
 
-0 18 * * * /usr/local/sbin/schedule_wakeup.sh && /sbin/shutdown -h now
-
-Commands
-
+```bash
 git clone https://github.com/bitresearch2006/WakeControl.git
-
 cd WakeControl
 
-cp -f schedule_wakeup.sh /usr/local/sbin/schedule_wakeup.sh
+# Example: wake at 08:00, shutdown at 23:00
+./install.sh 08:00 23:00
+```
+The installer will:
 
-sudo chmod +x /usr/local/sbin/schedule_wakeup.sh
+Copy the script into /usr/local/sbin/schedule_power.sh
 
-sudo crontab -e
+Set executable permissions automatically
 
-0 18 * * * /usr/local/sbin/schedule_wakeup.sh
+Create a cron job that runs daily at the shutdown time, calling the script with the wake‑up time
 
-if required to stop shutdown and wakeup, use command
+Log File
+The script writes debug logs to:
+
+```Code
+/var/log/schedule_power.log
+This file records when wake‑up was scheduled, shutdown triggered, and any errors.
+```
+
+Disable
+To temporarily stop shutdown and wake‑up scheduling:
+
+```bash
 sudo touch /tmp/disable_wakeup
+Remove the file to re‑enable.
+```
+
+Uninstall
+To remove the cron job and script:
+
+```bash
+sudo ./uninstall.sh
+```
